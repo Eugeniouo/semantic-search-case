@@ -23,7 +23,7 @@ semantic-search-case/
 
 ---
 
-## Quick Start
+## Быстрый старт
 
 ### Шаг 1. Установи uv
 
