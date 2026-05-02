@@ -44,7 +44,6 @@ powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 | ie
 uv --version
 ```
 
----
 
 ### Шаг 2. Клонируй репозиторий
 
@@ -53,7 +52,6 @@ git clone https://github.com/Eugeniouo/semantic-search-case.git
 cd semantic-search-case
 ```
 
----
 
 ### Шаг 3. Подтяни зависимости
 
@@ -63,9 +61,7 @@ uv sync
 ```
 
 Создаст папку `.venv` внутри проекта, это изолированное окружение.
-!Папка `.venv` у нас в `.gitignore`!
 
----
 
 ### Шаг 4. Запусти JupyterLab
 
@@ -76,9 +72,9 @@ uv run jupyter lab
 
 ---
 
-## Как добавить новый пакет
+## Как добавить новый пакет?
 
-Если нужна новая библиотека - не устанавливай через `pip install`.
+Если нужна новая библиотека - не устанавливаем через `pip install`.
 Пишем `uv add`, чтобы все в команде получили обновления:
 
 ```bash
@@ -92,7 +88,7 @@ uv export --no-hashes > requirements.txt
 
 ---
 
-## Как работаем с ноутбуками
+## Как работаем с ноутбуками?
 
 Каждый работает в своём ноутбуке из папки `notebooks/`.
 Общие функции (загрузка модели, подсчёт метрик, поиск) лежат в `src/`.
