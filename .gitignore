@@ -1,2 +1,5 @@
 .venv/
 __pycache__
+notebooks/cache/
+.ipynb_checkpoints/
+**/.ipynb_checkpoints/
