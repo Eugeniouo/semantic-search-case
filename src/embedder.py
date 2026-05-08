@@ -1,82 +1,123 @@
-from pathlib import Path
-import numpy as np
-from sentence_transformers import SentenceTransformer
-
 """
-Модуль для преобразования корпуса кода в эмбеддинги.
+модуль для преобразования корпуса кода в эмбеддинги.
 
-Содержит функции для:
+содержит функции для:
 - преобразования записи корпуса в текст
 - получения эмбеддингов через sentence-transformers
 - сохранения и загрузки эмбеддингов из кеша (.npy)
 - работы с кешированием по имени модели
 """
 
+from pathlib import Path
+import numpy as np
+from sentence_transformers import sentencetransformer
+from config import OUTPUTS_DIR
 
 def record_to_text(record: dict) -> str:
     """
-    Преобразует одну запись корпуса в текст для модели.
+    преобразует одну запись корпуса в текст для модели.
 
-    Args:
+    args:
         record (dict): запись корпуса с полями:
             function_name, language, description, code
 
-    Returns:
+    returns:
         str: текстовое представление записи
     """
     return f"""
-Function: {record.get('function_name', '')}
-Language: {record.get('language', '')}
-Description: {record.get('description', '')}
-Code:
+function: {record.get('function_name', '')}
+language: {record.get('language', '')}
+description: {record.get('description', '')}
+code:
 {record.get('code', '')}
 """.strip()
 
 
 
-# генерация эмбеддингов
+
 def get_embeddings(texts: list[str], model_name: str) -> np.ndarray:
-    # загружает модель и считает эмбеддинги для списка текстов.
-    model = SentenceTransformer(model_name)
+    """
+    Вычисляет эмбеддинги для списка текстов.
+
+    Args:
+        texts (list[str]): список текстов
+        model_name (str): имя модели sentence-transformers
+
+    Returns:
+        np.ndarray: матрица эмбеддингов
+    """
+    model = sentencetransformer(model_name)
     embeddings = model.encode(
         texts,
         show_progress_bar=True,
-        convert_to_numpy=True
+        convert_to_numpy=True,
+        normalize_embeddings=True
     )
     return embeddings
 
-# сохранение эмбеддингов
-def save_embeddings(path: str, embeddings: np.ndarray) -> None:
-    # cохраняет эмбеддинги в .npy файл.
-    Path(path).parent.mkdir(parents=True, exist_ok=True)
+
+def save_embeddings(path: str, embeddings: np.ndarray) -> none:
+    """
+    Сохраняет эмбеддинги в .npy файл.
+
+    Args:
+        path (str): путь к файлу
+        embeddings (np.ndarray): матрица эмбеддингов
+    """
+    path(path).parent.mkdir(parents=true, exist_ok=true)
     np.save(path, embeddings)
 
 
-# загрузка эмбеддингов
+
 def load_embeddings(path: str) -> np.ndarray:
-    #загружает эмбеддинги из .npy файла.
+    """
+    Загружает эмбеддинги из .npy файла.
+
+    Args:
+        path (str): путь к файлу
+
+    Returns:
+        np.ndarray: матрица эмбеддингов
+    """
     return np.load(path)
 
 
-# путь до кэша
+
 def get_cache_path(model_name: str) -> str:
-    # возвращает путь до файла с кэшем эмбеддингов для модели.
+    """
+    Возвращает путь к файлу кеша для модели.
+
+    Args:
+        model_name (str): имя модели
+
+    Returns:
+        str: путь к кешу
+    """
     safe_name = model_name.replace("/", "_")
-    return f"cache/{safe_name}.npy"
+    return str(OUTPUTS_DIR / f"{safe_name}.npy")
 
 
-# функция получения эмбеддинга (с кэшем)
+
 def get_or_compute_embeddings(texts: list[str], model_name: str) -> np.ndarray:
-    # если ембеддинги уже считались - загружает их, иначе считает
+    """
+    Загружает эмбеддинги из кеша или вычисляет их заново.
+
+    Args:
+        texts (list[str]): список текстов
+        model_name (str): имя модели
+
+    Returns:
+        np.ndarray: матрица эмбеддингов
+    """
     path = get_cache_path(model_name)
 
-    if Path(path).exists():
-        print("Loading embedding from the cache...")
+    if path(path).exists():
+        print("loading embedding from the cache...")
         return load_embeddings(path)
 
-    print("Count the embeddings...")
+    print("count the embeddings...")
     embeddings = get_embeddings(texts, model_name)
     save_embeddings(path, embeddings)
 
-    print("Saved to the cache: ", path)
+    print("saved to the cache: ", path)
     return embeddings
