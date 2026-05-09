@@ -1,34 +1,69 @@
+"""Семантический поиск по корпусу кода на основе косинусного сходства"""
+
 import numpy as np
 from sentence_transformers import util
 
-def find_top3(query_text: str, model, corpus_embeddings: np.ndarray, corpus: list, top_k: int = 3) -> list:
+def find_top_k(
+    query_text: str,
+    model,
+    corpus: list[dict],
+    corpus_embeddings: np.ndarray,
+    top_k: int = 3,
+) -> list[dict]:
     """
-    находит top_k наиболее похожих фрагментов для текстового запроса
-    возвращает список словарей с полями: id, score, function_name, description, rank
+    Ищет top_k наиболее похожих фрагментов для одного текстового запроса.
+
+    Возвращает список словарей с полями:
+    id, rank, score, function_name, category, description.
     """
     query_emb = model.encode(query_text, normalize_embeddings=True)
 
-    # util.cos_sim может вернуть torch.Tensor, сразу конвертируем в numpy
     scores = util.cos_sim(query_emb, corpus_embeddings)[0]
-    if hasattr(scores, 'cpu'):
+    if hasattr(scores, "cpu"):
         scores = scores.cpu().numpy()
-        
+
     top_indices = np.argsort(scores)[::-1][:top_k]
 
-    results = []
-    for rank, idx in enumerate(top_indices, start=1):
-        results.append({
-            "id": corpus[idx]["id"],    #chunk_id -> id
-            "score": scores[idx],
+    return [
+        {
+            "rank": rank,
+            "id": corpus[idx]["id"],
+            "score": float(scores[idx]),
             "function_name": corpus[idx]["function_name"],
+            "category": corpus[idx]["category"],
             "description": corpus[idx]["description"],
-            "rank": rank
-        })
-    return results
+        }
+        for rank, idx in enumerate(top_indices, start=1)
+    ]
 
-def search_all_questions(model, corpus_embeddings: np.ndarray, corpus: list, questions: list, top_k: int = 3) -> list:
+
+def search_all_questions(
+    questions: list[dict],
+    model,
+    corpus: list[dict],
+    corpus_embeddings: np.ndarray,
+    top_k: int = 3,
+) -> list[dict]:
     """
-    выполняет поиск top_k для всех вопросов из списка
-    возвращает список списков результатов (один подсписок на каждый вопрос)
+    Прогоняет все вопросы через поиск и возвращает результаты в едином формате.
+
+    Возвращает список словарей, один элемент на вопрос:
+    question_id, query, language, correct_chunk_id, results.
     """
-    return [find_top3(q["query"], model, corpus_embeddings, corpus, top_k) for q in questions]
+    outputs = []
+    for question in questions:
+        results = find_top_k(
+            query_text=question["query"],
+            model=model,
+            corpus=corpus,
+            corpus_embeddings=corpus_embeddings,
+            top_k=top_k,
+        )
+        outputs.append({
+            "question_id": question["question_id"],
+            "query": question["query"],
+            "language": question["language"],
+            "correct_chunk_id": question["correct_chunk_id"],
+            "results": results,
+        })
+    return outputs
