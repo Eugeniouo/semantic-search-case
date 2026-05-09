@@ -1,4 +1,5 @@
 .venv/
+.virtual_documents
 __pycache__
 notebooks/cache/
 .ipynb_checkpoints/
