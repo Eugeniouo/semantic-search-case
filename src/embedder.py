@@ -10,8 +10,8 @@
 
 from pathlib import Path
 import numpy as np
-from sentence_transformers import sentencetransformer
-from config import OUTPUTS_DIR
+from sentence_transformers import SentenceTransformer
+from src.config import OUTPUTS_DIR
 
 def record_to_text(record: dict) -> str:
     """
@@ -25,11 +25,11 @@ def record_to_text(record: dict) -> str:
         str: текстовое представление записи
     """
     return f"""
-function: {record.get('function_name', '')}
-language: {record.get('language', '')}
-description: {record.get('description', '')}
+function: {record['function_name']}
+language: {record['language']}
+description: {record['description']}
 code:
-{record.get('code', '')}
+{record['code']}
 """.strip()
 
 
@@ -46,7 +46,7 @@ def get_embeddings(texts: list[str], model_name: str) -> np.ndarray:
     Returns:
         np.ndarray: матрица эмбеддингов
     """
-    model = sentencetransformer(model_name)
+    model = SentenceTransformer(model_name)
     embeddings = model.encode(
         texts,
         show_progress_bar=True,
@@ -56,7 +56,7 @@ def get_embeddings(texts: list[str], model_name: str) -> np.ndarray:
     return embeddings
 
 
-def save_embeddings(path: str, embeddings: np.ndarray) -> none:
+def save_embeddings(path: str, embeddings: np.ndarray) -> None:
     """
     Сохраняет эмбеддинги в .npy файл.
 
@@ -64,7 +64,7 @@ def save_embeddings(path: str, embeddings: np.ndarray) -> none:
         path (str): путь к файлу
         embeddings (np.ndarray): матрица эмбеддингов
     """
-    path(path).parent.mkdir(parents=true, exist_ok=true)
+    Path(path).parent.mkdir(parents=True, exist_ok=True)
     np.save(path, embeddings)
 
 
@@ -111,7 +111,7 @@ def get_or_compute_embeddings(texts: list[str], model_name: str) -> np.ndarray:
     """
     path = get_cache_path(model_name)
 
-    if path(path).exists():
+    if Path(path).exists():
         print("loading embedding from the cache...")
         return load_embeddings(path)
 
