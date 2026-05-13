@@ -1,0 +1,22 @@
+﻿Модель,ID вопроса,Запрос,Ожидалось,Категория,Найденные функции,Причина
+intfloat/multilingual-e5-small,q_08,массовая вставка большого количества записей,bulkInsertRecords,database,"1. chunkList (utils)
+2. chunk_list (utils)
+3. find_orders_by_user (database)","Модель сосредоточилась на признаке «массовость» — большое количество записей. В векторном пространстве этот признак близок к функциям, которые обрабатывают большие объемы данных, таким как chunk, count, format_bytes. Технический аспект «вставить список» утратил значимость на фоне количественного признака."
+paraphrase-multilingual-mpnet-base-v2,q_01,"как проверить, истёк ли токен?",verify_jwt_token,auth,"1. validate_credit_card (validation)
+2. validateCreditCard (validation)
+3. validate_inn (validation)","Глагол «проверить» чаще всего встречается в категории валидации в датасете. В векторном пространстве кластер с глаголами 'validate', 'check' и «проверить» очень плотный. Модель не смогла сохранить контекст о том, истёк ли токен. Лексический триггер перебил техническую специфику."
+paraphrase-multilingual-mpnet-base-v2,q_24,compute file hash for verification,calculateHash,utils,"1. checkPassword (auth)
+2. check_password (auth)
+3. calculate_hash (utils)","В датасете функции тесно связаны с триггерами 'check', 'validate'. Запрос включает слово 'verification', которое в этом контексте чаще всего означает проверку данных, а не вычисление хэша. Поэтому безопасность оказалась семантически ближе к этим функциям в векторном пространстве."
+paraphrase-multilingual-MiniLM-L12-v2,q_01,"как проверить, истёк ли токен?",verify_jwt_token,auth,"1. validate_inn (validation)
+2. check_password (auth)
+3. validate_snils (validation)","У MiniLM меньшая размерность вектора — 384 против 768. Ей сложнее обрабатывать запросы, включающие несколько концепций (действие, объект и состояние). Модель упростила запросы до наиболее частого паттерна: проверить → validate/check. Из-за ограниченной ёмкости модель потеряла глубину контекста."
+paraphrase-multilingual-MiniLM-L12-v2,q_08,массовая вставка большого количества записей,bulkInsertRecords,database,"1. countUsers (database)
+2. bulk_insert_records (database)
+3. format_bytes (utils)","Модель правильно определила смысл, поставив bulk_insert_records на второе место. Однако эталонный ответ ожидает Java-версию. Оставшиеся две позиции смещены в сторону «количества/размера». Семантика верна, но язык другой, и количественный атрибут повлиял на результат."
+paraphrase-multilingual-MiniLM-L12-v2,q_11,"обработка ситуации, когда сервер вернул 429",handle_rate_limit,http,"1. handleRateLimit (http)
+2. restoreFromBackup (database)
+3. rollbackTransaction (database)","Кросс-языковое совпадение: модель обнаружила идентичную Java-функцию на первом месте. Остальные две позиции оказались в категории «восстановление после ошибки», так как в векторном пространстве обработка ошибок сервера близка к rollback/restore."
+paraphrase-multilingual-MiniLM-L12-v2,q_24,compute file hash for verification,calculateHash,utils,"1. calculate_hash (utils)
+2. validateCredentials (auth)
+3. validateInn (validation)",Модель успешно определила правильную логику в функции calculate_hash на Python и поставила ее на первое место. Однако эталонный ответ - JavaScript. Слово verification снова сгруппировало задачи по безопасности и валидации.

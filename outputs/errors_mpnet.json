@@ -1,0 +1,36 @@
+[
+  {
+    "question_id": "q_01",
+    "query": "как проверить, истёк ли токен?",
+    "query_lang": "ru",
+    "correct_func_name": "verify_jwt_token",
+    "correct_category": "auth",
+    "retrieved_names": [
+      "validate_credit_card",
+      "validateCreditCard",
+      "validate_inn"
+    ],
+    "retrieved_categories": [
+      "validation",
+      "validation",
+      "validation"
+    ]
+  },
+  {
+    "question_id": "q_24",
+    "query": "compute file hash for verification",
+    "query_lang": "en",
+    "correct_func_name": "calculateHash",
+    "correct_category": "utils",
+    "retrieved_names": [
+      "checkPassword",
+      "check_password",
+      "calculate_hash"
+    ],
+    "retrieved_categories": [
+      "auth",
+      "auth",
+      "utils"
+    ]
+  }
+]

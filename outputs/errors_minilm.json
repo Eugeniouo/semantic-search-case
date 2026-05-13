@@ -1,0 +1,70 @@
+[
+  {
+    "question_id": "q_01",
+    "query": "как проверить, истёк ли токен?",
+    "query_lang": "ru",
+    "correct_func_name": "verify_jwt_token",
+    "correct_category": "auth",
+    "retrieved_names": [
+      "validate_inn",
+      "check_password",
+      "validate_snils"
+    ],
+    "retrieved_categories": [
+      "validation",
+      "auth",
+      "validation"
+    ]
+  },
+  {
+    "question_id": "q_08",
+    "query": "массовая вставка большого количества записей",
+    "query_lang": "ru",
+    "correct_func_name": "bulkInsertRecords",
+    "correct_category": "database",
+    "retrieved_names": [
+      "countUsers",
+      "bulk_insert_records",
+      "format_bytes"
+    ],
+    "retrieved_categories": [
+      "database",
+      "database",
+      "utils"
+    ]
+  },
+  {
+    "question_id": "q_11",
+    "query": "обработка ситуации, когда сервер вернул 429",
+    "query_lang": "ru",
+    "correct_func_name": "handle_rate_limit",
+    "correct_category": "http",
+    "retrieved_names": [
+      "handleRateLimit",
+      "restoreFromBackup",
+      "rollbackTransaction"
+    ],
+    "retrieved_categories": [
+      "http",
+      "database",
+      "database"
+    ]
+  },
+  {
+    "question_id": "q_24",
+    "query": "compute file hash for verification",
+    "query_lang": "en",
+    "correct_func_name": "calculateHash",
+    "correct_category": "utils",
+    "retrieved_names": [
+      "calculate_hash",
+      "validateCredentials",
+      "validateInn"
+    ],
+    "retrieved_categories": [
+      "utils",
+      "auth",
+      "validation"
+    ]
+  }
+]

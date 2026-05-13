@@ -1,0 +1,19 @@
+[
+  {
+    "question_id": "q_08",
+    "query": "массовая вставка большого количества записей",
+    "query_lang": "ru",
+    "correct_func_name": "bulkInsertRecords",
+    "correct_category": "database",
+    "retrieved_names": [
+      "chunkList",
+      "chunk_list",
+      "find_orders_by_user"
+    ],
+    "retrieved_categories": [
+      "utils",
+      "utils",
+      "database"
+    ]
+  }
+]
