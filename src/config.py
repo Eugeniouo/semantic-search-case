@@ -12,7 +12,8 @@ OUTPUTS_DIR = ROOT / "outputs"
 
 MODELS = [
     "paraphrase-multilingual-MiniLM-L12-v2",
-    "paraphrase-multilingual-mpnet-base-v2"
+    "paraphrase-multilingual-mpnet-base-v2",
+    "intfloat/multilingual-e5-small"
 ]
 
 TOP_K = 3

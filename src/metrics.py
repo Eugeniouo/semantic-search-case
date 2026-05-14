@@ -6,6 +6,7 @@
 """
 
 import pandas as pd
+from src.config import TOP_K
 
 def reciprocal_rank(results: list[dict], correct_id: str) -> float:
     """
@@ -24,7 +25,7 @@ def reciprocal_rank(results: list[dict], correct_id: str) -> float:
     return 0.0
 
 
-def precision_at_k(search_outputs: list[dict], k: int = 3) -> float:
+def precision_at_k(search_outputs: list[dict], k: int = TOP_K) -> float:
     """
     Вычисляет Precision@K, доля запросов для которых правильный
     ответ оказался в первых k результатах.
@@ -67,7 +68,7 @@ def mrr(search_outputs: list[dict]) -> float:
     return sum(rr_scores) / len(rr_scores)
 
 
-def evaluate(search_outputs: list[dict], k: int = 3) -> dict[str, int | float]:
+def evaluate(search_outputs: list[dict], k: int = TOP_K) -> dict[str, int | float]:
     """
     Вычисляет сводные метрики качества поиска.
 
@@ -85,7 +86,7 @@ def evaluate(search_outputs: list[dict], k: int = 3) -> dict[str, int | float]:
     }
 
 
-def build_detailed_table(search_outputs: list[dict], k: int = 3) -> pd.DataFrame:
+def build_detailed_table(search_outputs: list[dict], k: int = TOP_K) -> pd.DataFrame:
     """
     Строит детальную таблицу результатов поиска по каждому запросу.
     Удобна для анализа ошибок, показывает что нашлось и на какой позиции.

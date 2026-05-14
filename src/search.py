@@ -2,13 +2,14 @@
 
 import numpy as np
 from sentence_transformers import util
+from src.config import TOP_K
 
 def find_top_k(
     query_text: str,
     model,
     corpus: list[dict],
     corpus_embeddings: np.ndarray,
-    top_k: int = 3,
+    top_k: int = TOP_K,
 ) -> list[dict]:
     """
     Ищет top_k наиболее похожих фрагментов для одного текстового запроса.
@@ -42,7 +43,7 @@ def search_all_questions(
     model,
     corpus: list[dict],
     corpus_embeddings: np.ndarray,
-    top_k: int = 3,
+    top_k: int = TOP_K,
 ) -> list[dict]:
     """
     Прогоняет все вопросы через поиск и возвращает результаты в едином формате.
