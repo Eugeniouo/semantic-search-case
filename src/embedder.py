@@ -1,12 +1,4 @@
-"""
-Модуль для преобразования корпуса кода в эмбеддинги.
-
-Содержит функции для:
-- преобразования записи корпуса в текст
-- получения эмбеддингов через sentence-transformers
-- сохранения и загрузки эмбеддингов из кеша (.npy)
-- работы с кешированием по имени модели
-"""
+"""Модуль для преобразования корпуса кода в эмбеддинги."""
 
 from pathlib import Path
 import numpy as np
@@ -15,14 +7,13 @@ from src.config import OUTPUTS_DIR
 
 def record_to_text(record: dict) -> str:
     """
-    Преобразует одну запись корпуса в текст для модели.
+    Преобразует одну запись корпуса в текст для подачи в модель.
 
-    args:
-        record (dict): запись корпуса с полями:
-            function_name, language, description, code
+    Args:
+        record (dict): Запись корпуса с полями 'function_name', 'language', 'description', 'code'.
 
-    returns:
-        str: текстовое представление записи
+    Returns:
+        str: Текстовое представление записи, готовое для векторизации.
     """
     return f"""
 function: {record['function_name']}
@@ -31,8 +22,6 @@ description: {record['description']}
 code:
 {record['code']}
 """.strip()
-
-
 
 
 def get_embeddings(texts: list[str], model_name: str) -> np.ndarray:

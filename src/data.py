@@ -1,4 +1,4 @@
-"""Загрузка файлов датасета"""
+"""Загрузка файлов датасета."""
 
 import json
 from pathlib import Path
@@ -23,10 +23,12 @@ def load_dataset() -> tuple[list[dict], list[dict], dict[str, dict]]:
     """
     Загружает все три датасета одним вызовом.
 
-    Использование:
-        corpus, questions, categories = load_dataset()
+    Returns:
+        tuple: Кортеж из трех элементов:
+            - corpus (list[dict]): Корпус фрагментов кода.
+            - questions (list[dict]): Набор тестовых вопросов.
+            - categories (dict[str, dict]): Словарь категорий (где ключ - идентификатор категории).
     """
-
     corpus = load_corpus()
     questions = load_questions()
     categories = load_categories()

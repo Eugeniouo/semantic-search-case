@@ -1,4 +1,4 @@
-"""Семантический поиск по корпусу кода на основе косинусного сходства"""
+"""Семантический поиск по корпусу кода на основе косинусного сходства."""
 
 import numpy as np
 from sentence_transformers import util
@@ -12,10 +12,18 @@ def find_top_k(
     top_k: int = TOP_K,
 ) -> list[dict]:
     """
-    Ищет top_k наиболее похожих фрагментов для одного текстового запроса.
+    Ищет top_k наиболее релевантных фрагментов кода для одного запроса.
 
-    Возвращает список словарей с полями:
-    id, rank, score, function_name, category, description.
+    Args:
+        query_text (str): Текст запроса (вопроса).
+        model: Модель SentenceTransformer для векторизации.
+        corpus (list[dict]): Исходный корпус кода.
+        corpus_embeddings (np.ndarray): Предварительно вычисленная матрица эмбеддингов корпуса.
+        top_k (int): Количество возвращаемых результатов. По умолчанию TOP_K.
+
+    Returns:
+        list[dict]: Список из top_k словарей с результатами поиска. Каждый словарь 
+        содержит ключи: id, rank, score, function_name, category, description.
     """
     query_emb = model.encode(query_text, normalize_embeddings=True)
 
@@ -46,10 +54,18 @@ def search_all_questions(
     top_k: int = TOP_K,
 ) -> list[dict]:
     """
-    Прогоняет все вопросы через поиск и возвращает результаты в едином формате.
+    Выполняет семантический поиск для списка вопросов и формирует сводный результат.
 
-    Возвращает список словарей, один элемент на вопрос:
-    question_id, query, language, correct_chunk_id, results.
+    Args:
+        questions (list[dict]): Список тестовых вопросов.
+        model: Модель SentenceTransformer для векторизации.
+        corpus (list[dict]): Исходный корпус кода.
+        corpus_embeddings (np.ndarray): Эмбеддинги корпуса кода.
+        top_k (int): Глубина поиска для каждого вопроса.
+
+    Returns:
+        list[dict]: Список результатов по одному элементу на каждый вопрос.
+        Ключи: question_id, query, language, correct_chunk_id, results.
     """
     outputs = []
     for question in questions:
