@@ -1,98 +1,110 @@
-
 <!DOCTYPE html>
 <html>
+
 <head>
     <meta charset="UTF-8">
-    <title>Типология ошибок</title>
     <style>
-        body {
-            font-family: 'Segoe UI', Arial, sans-serif;
-            margin: 30px;
-        }
         table {
             width: 100%;
             border-collapse: collapse;
             font-size: 13px;
+            table-layout: auto;
         }
+
         th {
             background-color: #2c3e50;
             color: white;
             font-weight: bold;
-            text-align: center;
-            padding: 12px 8px;
+            text-align: left;
+            padding: 10px 8px;
             border: 1px solid #466;
         }
+
         td {
             border: 1px solid #ddd;
-            padding: 10px 8px;
+            padding: 8px;
             vertical-align: top;
             text-align: left;
         }
-        td:first-child {
-            background-color: #f8f9fa;
-            font-weight: bold;
-        }
-        td:nth-child(2), td:nth-child(3), td:nth-child(4), td:nth-child(5) {
+
+        td:nth-child(2),
+        td:nth-child(3) {
             text-align: center;
+            white-space: nowrap;
         }
+
+        td:first-child {
+            font-weight: bold;
+            background-color: #f8f9fa;
+        }
+
         tr:nth-child(even) {
             background-color: #f9f9f9;
         }
+
         tr:hover {
             background-color: #f0f0f0;
         }
+
+        h2 {
+            color: #2c3e50;
+            margin-bottom: 12px;
+        }
     </style>
 </head>
+
 <body>
-
-<h2 style="text-align: center; color: #2c3e50;">Типология ошибок семантического поиска</h2>
-
-<table>
-    <thead>
-        <tr>
-            <th style="width: 180px;">Тип ошибки</th>
-            <th style="width: 60px;">Кол-во</th>
-            <th style="width: 70px;">Процент</th>
-            <th style="width: 150px;">Затронутые модели</th>
-            <th style="width: 100px;">Вопросы</th>
-            <th style="width: 220px;">Механизм возникновения</th>
-            <th style="width: 350px;">Причина</th>
-        </tr>
-    </thead>
-    <tbody>
-
-        <tr>
-            <td>Лексический сдвиг категории</td>
-            <td style="text-align: center;"><strong>4</strong></td>
-            <td style="text-align: center;">44.4%</td>
-            <td>mpnet, MiniLM</td>
-            <td style="text-align: center;">q_01, q_24</td>
-            <td>Глагол «проверить» / слово «verification» перетягивает выдачу в категорию validation или auth, даже когда запрос про другую техническую операцию.</td>
-            <td>В векторном пространстве кластеры с глаголами validate, check, проверить очень плотные. Модель не смогла сохранить контекст (токен/хэш), лексический триггер перебил техническую специфику.</td>
-        </tr>
-    
-        <tr>
-            <td>Размытие технического контекста</td>
-            <td style="text-align: center;"><strong>2</strong></td>
-            <td style="text-align: center;">22.2%</td>
-            <td>e5-small, MiniLM</td>
-            <td style="text-align: center;">q_08</td>
-            <td>Модель реагирует на признак «большое количество» / «массовость» вместо целевой операции (вставка в БД).</td>
-            <td>В векторном пространстве признак «массовость/большое количество» близок к функциям, которые обрабатывают объёмы данных (chunk, count, format_bytes). Технический аспект «вставить список» утратил значимость на фоне количественного признака.</td>
-        </tr>
-    
-        <tr>
-            <td>Кросс-языковое совпадение</td>
-            <td style="text-align: center;"><strong>3</strong></td>
-            <td style="text-align: center;">33.3%</td>
-            <td>MiniLM</td>
-            <td style="text-align: center;">q_08, q_11, q_24</td>
-            <td>Модель находит семантически идентичную функцию, но на другом языке программирования (Java вместо Python). Строгая метрика по correct_chunk_id считает это ошибкой, хотя смысл понят верно.</td>
-            <td>Модели кодируют смысл, а не синтаксис. Описания функций на русском языке идентичны для Python и Java версий, поэтому в эмбеддинг-пространстве они оказываются рядом. Это не ошибка понимания, а артефакт строгой оценки по ID.</td>
-        </tr>
-    
-    </tbody>
-</table>
-
+    <h2>Типология ошибок семантического поиска</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Тип ошибки</th>
+                <th>Кол-во</th>
+                <th>Процент</th>
+                <th>Затронутые модели</th>
+                <th>Вопросы</th>
+                <th>Механизм возникновения</th>
+                <th>Причина</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Лексический сдвиг категории</td>
+                <td><strong>4</strong></td>
+                <td>44.4%</td>
+                <td>mpnet, MiniLM</td>
+                <td>q_01, q_24</td>
+                <td>Глагол «проверить» / слово «verification» перетягивает выдачу в категорию validation или auth, даже
+                    когда запрос про другую техническую операцию.</td>
+                <td>В векторном пространстве кластеры с глаголами validate, check, проверить очень плотные. Модель не
+                    смогла сохранить контекст (токен/хэш), лексический триггер перебил техническую специфику.</td>
+            </tr>
+            <tr>
+                <td>Размытие технического контекста</td>
+                <td><strong>2</strong></td>
+                <td>22.2%</td>
+                <td>e5-small, MiniLM</td>
+                <td>q_08</td>
+                <td>Модель реагирует на признак «большое количество» / «массовость» вместо целевой операции (вставка в
+                    БД).</td>
+                <td>В векторном пространстве признак «массовость» близок к функциям обработки объёмов данных (chunk,
+                    count, format_bytes). Технический аспект «вставить список» утратил значимость на фоне
+                    количественного признака.</td>
+            </tr>
+            <tr>
+                <td>Кросс-языковое совпадение</td>
+                <td><strong>3</strong></td>
+                <td>33.3%</td>
+                <td>MiniLM</td>
+                <td>q_08, q_11, q_24</td>
+                <td>Модель находит семантически идентичную функцию, но на другом языке программирования (Java вместо
+                    Python). Строгая метрика по correct_chunk_id считает это ошибкой, хотя смысл понят верно.</td>
+                <td>Модели кодируют смысл, а не синтаксис. Описания функций идентичны для Python и Java версий, поэтому
+                    в эмбеддинг-пространстве они оказываются рядом. Это не ошибка понимания, а артефакт строгой оценки
+                    по ID.</td>
+            </tr>
+        </tbody>
+    </table>
 </body>
+
 </html>
